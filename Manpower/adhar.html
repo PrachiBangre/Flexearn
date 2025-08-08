@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadhar Verification</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #3b5998 0%, #8b9dc3 100%);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .verification-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .verification-container h3 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            margin-bottom: 15px;
+            border-radius: 25px;
+        }
+
+        .verify-btn {
+            background-color: #3b5998;
+            color: white;
+            border-radius: 25px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .verify-btn:hover {
+            background-color: #8b9dc3;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="verification-container">
+        <h3>Aadhar Number Verification</h3>
+        <form id="aadhar-form">
+            <input type="text" id="aadhar-number" class="form-control" placeholder="Enter your Aadhar Number" maxlength="12" required>
+            <button type="button" class="verify-btn" onclick="verifyAadhar()">Verify</button>
+            <p class="message" id="message"></p>
+        </form>
+    </div>
+
+    <script>
+        function verifyAadhar() {
+            const aadharNumber = document.getElementById('aadhar-number').value;
+            const message = document.getElementById('message');
+
+            // Reset message
+            message.textContent = '';
+            message.classList.remove('error', 'success');
+
+            // Validate Aadhar number (simple 12-digit numeric check)
+            const aadharRegex = /^[0-9]{12}$/;
+            if (!aadharRegex.test(aadharNumber)) {
+                message.textContent = 'Invalid Aadhar number. It should be a 12-digit numeric value.';
+                message.classList.add('error');
+                return;
+            }
+
+            // Simulate verification (replace this with actual backend call)
+            const verified = Math.random() > 0.5; // Simulate success or failure randomly
+
+            if (verified) {
+                message.textContent = 'Aadhar number verified successfully!';
+                message.classList.add('success');
+            } else {
+                message.textContent = 'Aadhar number verification failed. Please try again.';
+                message.classList.add('error');
+            }
+        }
+		function verifyAadhar() {
+    const aadharNumber = document.getElementById('aadhar-number').value;
+    const message = document.getElementById('message');
+
+    // Reset message
+    message.textContent = '';
+    message.classList.remove('error', 'success');
+
+    // Validate Aadhar number (simple 12-digit numeric check)
+    const aadharRegex = /^[0-9]{12}$/;
+    if (!aadharRegex.test(aadharNumber)) {
+        message.textContent = 'Invalid Aadhar number. It should be a 12-digit numeric value.';
+        message.classList.add('error');
+        return;
+    }
+
+    // Send to backend
+    fetch('adhar.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `aadharNumber=${aadharNumber}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        message.textContent = data.message;
+        if (data.status === 'success') {
+            message.classList.add('success');
+        } else {
+            message.classList.add('error');
+        }
+    })
+    .catch(error => {
+        message.textContent = 'An error occurred while verifying. Please try again later.';
+        message.classList.add('error');
+    });
+}
+
+    </script>
+</body>
+
+</html>
